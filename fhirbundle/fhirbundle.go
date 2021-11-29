@@ -73,6 +73,7 @@ const (
 	COVAXIN           VaccineType = "COVAXIN"
 )
 
+// https://www2a.cdc.gov/vaccines/iis/iisstandards/vaccines.asp?rpt=cvx
 func (vt VaccineType) cvxcode() string {
 	switch vt {
 	case Pfizer:
@@ -161,7 +162,7 @@ func (f FHIRBundle) MarshalJSON() ([]byte, error) {
 				VaccineCode: &(vaccineCodeJSON{
 					Coding: []codingJSON{
 						{
-							System: "http://hl7.org/fhir/sid/cvx",
+							System: "https://hl7.org/fhir/sid/cvx", // https://www.hl7.org/fhir/cvx.html
 							Code:   immunization.VaccineType.cvxcode(),
 						},
 					},

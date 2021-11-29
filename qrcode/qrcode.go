@@ -7,10 +7,12 @@ import (
 	qrcode "github.com/skip2/go-qrcode"
 )
 
+const maxChunkSize = 1195 // https://spec.smarthealth.cards/#chunking
+
 var JWSTooLargeError = errors.New("JWS too large, QR chunking not currently implemented.")
 
 func Encode(content string) ([]byte, error) {
-	if len(content) > 1195 {
+	if len(content) > maxChunkSize {
 		return nil, JWSTooLargeError
 	}
 

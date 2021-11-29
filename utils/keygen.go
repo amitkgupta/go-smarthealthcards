@@ -1,43 +1,34 @@
-package utils
+package main
 
 import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rand"
-	"math/big"
+	"fmt"
 )
 
-func GenerateKey() {
-	pkey, _ := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
-	d, _ := pkey.D.MarshalText()
-	x, _ := pkey.PublicKey.X.MarshalText()
-	y, _ := pkey.PublicKey.Y.MarshalText()
-
-	println(string(d), string(x), string(y))
-
-	D := new(big.Int)
-	if err := D.UnmarshalText(d); err != nil {
+func main() {
+	pkey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+	if err != nil {
 		panic(err)
 	}
 
-	X := new(big.Int)
-	if err := X.UnmarshalText(x); err != nil {
+	d, err := pkey.D.MarshalText()
+	if err != nil {
 		panic(err)
 	}
 
-	Y := new(big.Int)
-	if err := Y.UnmarshalText(y); err != nil {
+	x, err := pkey.PublicKey.X.MarshalText()
+	if err != nil {
 		panic(err)
 	}
 
-	PKEY := ecdsa.PrivateKey{
-		D: D,
-		PublicKey: ecdsa.PublicKey{
-			Curve: elliptic.P256(),
-			X:     X,
-			Y:     Y,
-		},
+	y, err := pkey.PublicKey.Y.MarshalText()
+	if err != nil {
+		panic(err)
 	}
 
-	println(pkey.Equal(&PKEY))
+	fmt.Printf("export SMART_HEALTH_CARDS_KEY_D=%s\n", string(d))
+	fmt.Printf("export SMART_HEALTH_CARDS_KEY_X=%s\n", string(x))
+	fmt.Printf("export SMART_HEALTH_CARDS_KEY_Y=%s\n", string(y))
 }

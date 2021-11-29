@@ -1,28 +1,39 @@
-package webformhandler
+package webhandlers
 
 import (
+	"crypto/ecdsa"
 	"encoding/json"
 	"errors"
 	"net/http"
 	"strings"
 	"time"
 
-	"github.com/amitkgupta/go-smarthealthcards/ecdsa"
 	"github.com/amitkgupta/go-smarthealthcards/fhirbundle"
 	"github.com/amitkgupta/go-smarthealthcards/jws"
 	"github.com/amitkgupta/go-smarthealthcards/qrcode"
 )
 
-type webFormHandler struct {
-	key    ecdsa.Key
+type handlers struct {
+	key    *ecdsa.PrivateKey
 	issuer string
 }
 
-func New(key ecdsa.Key, issuer string) webFormHandler {
-	return webFormHandler{key: key, issuer: issuer}
+func New(key *ecdsa.PrivateKey, issuer string) handlers {
+	return handlers{key: key, issuer: issuer}
 }
 
-func (h webFormHandler) Process(w http.ResponseWriter, r *http.Request) (int, string, bool) {
+func (h handlers) JWKSJSON(w http.ResponseWriter, r *http.Request) (int, string, bool) {
+	if jwksJSON, err := jws.JWKSJSON(h.key); err != nil {
+		return http.StatusInternalServerError, "", false
+	} else {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(jwksJSON)
+		return 0, "", true
+	}
+}
+
+func (h handlers) ProcessForm(w http.ResponseWriter, r *http.Request) (int, string, bool) {
 	fhirBundle, err := parseInput(r)
 	if err != nil {
 		return http.StatusBadRequest, err.Error(), false
