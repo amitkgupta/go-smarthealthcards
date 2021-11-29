@@ -6,7 +6,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 
-	"github.com/amitkgupta/personal-website/smarthealthcards/ecdsa"
+	"github.com/amitkgupta/go-smarthealthcards/ecdsa"
 )
 
 type header struct {

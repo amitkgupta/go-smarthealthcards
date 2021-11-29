@@ -7,10 +7,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/amitkgupta/personal-website/smarthealthcards/ecdsa"
-	"github.com/amitkgupta/personal-website/smarthealthcards/fhirbundle"
-	"github.com/amitkgupta/personal-website/smarthealthcards/jws"
-	"github.com/amitkgupta/personal-website/smarthealthcards/qrcode"
+	"github.com/amitkgupta/go-smarthealthcards/ecdsa"
+	"github.com/amitkgupta/go-smarthealthcards/fhirbundle"
+	"github.com/amitkgupta/go-smarthealthcards/jws"
+	"github.com/amitkgupta/go-smarthealthcards/qrcode"
 )
 
 type webFormHandler struct {
