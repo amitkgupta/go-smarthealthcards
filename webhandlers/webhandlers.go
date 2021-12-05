@@ -1,9 +1,11 @@
 package webhandlers
 
 import (
+	"archive/zip"
 	"crypto/ecdsa"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -49,17 +51,32 @@ func (h handlers) ProcessForm(w http.ResponseWriter, r *http.Request) (int, stri
 		return http.StatusInternalServerError, "", false
 	}
 
-	qrPNG, err := qrcode.Encode(healthCardJWS)
+	qrPNGs, err := qrcode.Encode(healthCardJWS)
 	if err != nil {
-		if errors.Is(err, qrcode.JWSTooLargeError) {
-			return http.StatusRequestEntityTooLarge, "Breaking up large input into multiple chunks and generating multiple QR codes is not supported at this time.", false
-		} else {
-			return http.StatusInternalServerError, "", false
-		}
+		return http.StatusInternalServerError, "", false
 	}
 
-	w.Header().Set("Content-Type", "image/png")
-	w.Write(qrPNG)
+	if len(qrPNGs) == 1 {
+		w.Header().Set("Content-Type", "image/png")
+		w.Write(qrPNGs[0])
+	} else {
+		zw := zip.NewWriter(w)
+
+		for i, qrPNG := range qrPNGs {
+			if f, err := zw.Create(fmt.Sprintf("%d.png", i+1)); err != nil {
+				return http.StatusInternalServerError, "", false
+			} else if _, err = f.Write(qrPNG); err != nil {
+				return http.StatusInternalServerError, "", false
+			}
+		}
+
+		if err := zw.Close(); err != nil {
+			return http.StatusInternalServerError, "", false
+		}
+
+		w.Header().Set("Content-Type", "application/zip")
+	}
+
 	return 0, "", true
 }
 

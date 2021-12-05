@@ -77,8 +77,6 @@ $ open /tmp/qr.png
 
 - This module currently only supports certain COVID-19 immunizations; with minor modifications it could be generalized to support all COVID-19 immunizations, and even immunizations of other diseases
 - This module does not support other types of smart health cards such as those for dianoses or lab results, only immunizations
-- This module does not support chunking large input and generating multiple QR codes that can be assembled into a single smart health card; see [here](https://spec.smarthealth.cards/#encoding-chunks-as-qr-codes)
-
 
 ## License
 
