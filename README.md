@@ -1,21 +1,20 @@
 # go-smarthealthcards
 
-Golang libraries for generating QR codes for [Smart Health Cards](https://smarthealth.cards/en/) representing COVID-19 Immunizations.
+Golang libraries for generating QR codes for [SMART Health Cards](https://smarthealth.cards/en/)
+representing COVID-19 Immunizations.
 
-## Usage
+## Demo
 
-### Individual Libraries
+[![demo](https://img.youtube.com/vi/oSCz6mb54mk/0.jpg)](https://youtu.be/oSCz6mb54mk)
 
-You can use the libraries in this module independently:
+## Documentation
 
-- `ecdsa`: load an ECDSA P-256 private key (`*crypto/ecdsa.PrivateKey`) from string representations of its key parameters; see [here](https://spec.smarthealth.cards/#generating-and-resolving-cryptographic-keys)
-- `fhirbundle`: construct and marshal a (pre-compressed) JWS payload containing an FHIR bundle of information representing COVID-19 immunizations; see [here](https://spec.smarthealth.cards/#health-cards-are-encoded-as-compact-serialization-json-web-signatures-jws) and [here](https://build.fhir.org/ig/HL7/fhir-shc-vaccination-ig/StructureDefinition-shc-vaccination-bundle-dm.html#tab-snapshot)
-- `jws`: create a compact serialization of a JSON Web Signature (JWS) with the ECDSA P-256 SHA-256 signing algorithm and DEFLATE compression of the payload and create a serialization of a JSON Web Key Set representing the public key of an ECDSA P-256 key; see [here](https://spec.smarthealth.cards/#health-cards-are-encoded-as-compact-serialization-json-web-signatures-jws), [here](https://spec.smarthealth.cards/#health-cards-are-small), and [here](https://spec.smarthealth.cards/#determining-keys-associated-with-an-issuer)
-- `qrcode`: create a QR code in PNG format encoding the JWS of a smart health card such that smart devices such as iPhones can scan the QR code and load the smart health card information in applications such as the Wallet and Health apps for the iPhone; see [here](https://spec.smarthealth.cards/#every-health-card-can-be-embedded-in-a-qr-code) and [here](https://spec.smarthealth.cards/#encoding-chunks-as-qr-codes)
+[![godoc](https://godoc.org/github.com/amitkgupta/go-smarthealthcards?status.png)](https://godoc.org/github.com/amitkgupta/go-smarthealthcards)
 
-### Full End-to-End Example
+## Example
 
-You can compose the libraries in this module together for a full end-to-end solution:
+You can use the libraries in this module independently, or you can compose the libraries in this
+module together for a full end-to-end solution:
 
 #### Generate a signing key and set environment variables
 
@@ -75,8 +74,10 @@ $ open /tmp/qr.png
 
 ## Limitations
 
-- This module currently only supports certain COVID-19 immunizations; with minor modifications it could be generalized to support all COVID-19 immunizations, and even immunizations of other diseases
-- This module does not support other types of smart health cards such as those for dianoses or lab results, only immunizations
+- This module currently only supports certain COVID-19 immunizations; with minor modifications it
+could be generalized to support all COVID-19 immunizations, and even immunizations of other diseases
+- This module does not support other types of SMART Health Cards such as those for dianoses or lab
+results, only immunizations
 
 ## License
 

@@ -1,3 +1,11 @@
+// Package jws creates a compact serialization of a JSON Web Signature (JWS)
+// with the ECDSA P-256 SHA-256 signing algorithm and DEFLATE compression of
+// the payload and creates a serialization of a JSON Web Key Set representing
+// the public key of an ECDSA P-256 key. See
+// https://spec.smarthealth.cards/#health-cards-are-encoded-as-compact-serialization-json-web-signatures-jws,
+// https://spec.smarthealth.cards/#health-cards-are-small,
+// and
+// https://spec.smarthealth.cards/#determining-keys-associated-with-an-issuer
 package jws
 
 import (
@@ -24,6 +32,9 @@ type header struct {
 	KeyID     string `json:"kid"`
 }
 
+// SignAndSerialize compresses the given payload, signs it with the given key,
+// and returns the resulting enoded JSON Web Signature (JWS). See:
+// https://datatracker.ietf.org/doc/html/rfc7515#appendix-A.3
 func SignAndSerialize(payload []byte, key *ecdsa.PrivateKey) (string, error) {
 	h := header{
 		Algorithm: algorithm,
@@ -99,6 +110,10 @@ func kid(key *ecdsa.PrivateKey) string {
 	return base64.RawURLEncoding.EncodeToString(hash)
 }
 
+// JWKSJSON takes an *crypto/ecdsa.PrivateKey and returns
+// the JSON serialization of the JSON Web Key Set (JWKS)
+// representing the unique publid identifying information
+// of the private key.
 func JWKSJSON(key *ecdsa.PrivateKey) ([]byte, error) {
 	return json.Marshal(jwks{
 		Keys: []jwk{

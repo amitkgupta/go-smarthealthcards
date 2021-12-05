@@ -1,3 +1,9 @@
+// Package fhirbundle constructs and marshals a (pre-compressed) JWS
+// payload containing an FHIR bundle of information representing
+// COVID-19 immunizations. See
+// https://spec.smarthealth.cards/#health-cards-are-encoded-as-compact-serialization-json-web-signatures-jws
+// and
+// https://build.fhir.org/ig/HL7/fhir-shc-vaccination-ig/StructureDefinition-shc-vaccination-bundle-dm.html#tab-snapshot
 package fhirbundle
 
 import (
@@ -22,6 +28,15 @@ type credentialSubject struct {
 	Bundle  FHIRBundle `json:"fhirBundle"`
 }
 
+// NewJWSPayload returns a struct that can be serialized as JSON
+// and represent the (pre-compressed) payload of a JSON Web Signature
+// (JWS) as described here:
+// https://spec.smarthealth.cards/#health-cards-are-encoded-as-compact-serialization-json-web-signatures-jws
+//
+// This function takes the core relevant data for an FHIR
+// bundle representing a patient's COVID-19 immunizations,
+// encapsulated in an FHIRBundle object, and an issuer which
+// is the entity that will JWS, as inputs.
 func NewJWSPayload(fb FHIRBundle, issuer string) jwsPayload {
 	return jwsPayload{
 		Issuer:    issuer,
@@ -40,30 +55,57 @@ func NewJWSPayload(fb FHIRBundle, issuer string) jwsPayload {
 	}
 }
 
+// FHIRBundle encapsulates the core relevant data for an FHIR
+// bundle representing a patient's COVID-19 immunizations
 type FHIRBundle struct {
+	// Patient represents an individual who has received immunizations
 	Patient
+
+	// Immunizations represents the immunizations the patient has received
 	Immunizations []Immunization
 }
 
+// Patient represents an individual who has received immunizations
 type Patient struct {
+	// Name is the patient's name
 	Name
+
+	// BirthDate is the patient's date of birth
 	BirthDate time.Time
 }
 
+// Name represents a patient's name
 type Name struct {
-	Family string   `json:"family"`
+	// Family represents the patient's family name
+	Family string `json:"family"`
+
+	// Givens represents the patient's given names
 	Givens []string `json:"given"`
 }
 
+// Immunization represents one instance of a COVID-19 immunization
+// performed on a patient
 type Immunization struct {
+	// DatePerformed represents the date when the immunization was
+	// performed
 	DatePerformed time.Time
-	Performer     string
-	LotNumber     string
+
+	// Performer represents the entity which performed the immunization
+	// such as a particular hospital or health clinic
+	Performer string
+
+	// LotNumber represents the lot number of the specific batch of the
+	// vaccine that was administered
+	LotNumber string
+
+	// VaccineType represents the type of vaccine that was administered,
+	// e.g. Pfizer-BioNTech
 	VaccineType
 }
 
 type VaccineType string
 
+// Supported COVID-19 vaccination types.
 const (
 	Pfizer            VaccineType = "Pfizer"
 	Moderna           VaccineType = "Moderna"
@@ -137,6 +179,11 @@ type actorJSON struct {
 	Display string `json:"display"`
 }
 
+// MarshalJSON takes the core relevant data for an FHIR bundle
+// encapsulated in an FHIRBundle object, and seralizes it as
+// a JSON byte slice including all the additional boilerplate
+// as defined here:
+// https://build.fhir.org/ig/HL7/fhir-shc-vaccination-ig/StructureDefinition-shc-vaccination-bundle-dm.html
 func (f FHIRBundle) MarshalJSON() ([]byte, error) {
 	fbj := fhirBundleJSON{
 		ResourceType: "Bundle",

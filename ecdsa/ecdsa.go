@@ -1,3 +1,6 @@
+// Package ecdsa loads an ECDSA P-256 private key (*crypto/ecdsa.PrivateKey)
+// from string representations of its key parameters. See
+// https://spec.smarthealth.cards/#generating-and-resolving-cryptographic-keys
 package ecdsa
 
 import (
@@ -6,6 +9,11 @@ import (
 	"math/big"
 )
 
+// LoadKey takes string representations of the d, x, and y
+// paramters of an ECDSA key, and loads them as *math/big.Int
+// objects using the (*math/big.Int).UnmarshalText method.
+// Then it return an ECDSA private key of type
+// *crypto/ecdsa.PrivateKey.
 func LoadKey(d, x, y string) (*ecdsa.PrivateKey, error) {
 	dInt := new(big.Int)
 	if err := dInt.UnmarshalText([]byte(d)); err != nil {

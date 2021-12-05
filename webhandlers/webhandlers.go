@@ -1,3 +1,5 @@
+// Package webhandlers can be used in a web-based application for issuing SMART
+// Health Card QR codes for COVID-19 immunizations.
 package webhandlers
 
 import (
@@ -20,11 +22,21 @@ type handlers struct {
 	issuer string
 }
 
+// New returns an object with methods that can be used in a web-based
+// application for issuing SMART Health Card QR codes for COVID-19
+// immunizations.
 func New(key *ecdsa.PrivateKey, issuer string) handlers {
 	return handlers{key: key, issuer: issuer}
 }
 
-func (h handlers) JWKSJSON(w http.ResponseWriter, r *http.Request) (int, string, bool) {
+// JWKSJSON writes the JSON representation of the JSON Web Key Set
+// representation of the public information of the associated private
+// key.
+//
+// If there is an error, this methods returns the HTTP response code,
+// an additional error message if available, and false. If there is no
+// error, it returns 0, the empty string, and true.
+func (h handlers) JWKSJSON(w http.ResponseWriter) (int, string, bool) {
 	if jwksJSON, err := jws.JWKSJSON(h.key); err != nil {
 		return http.StatusInternalServerError, "", false
 	} else {
@@ -35,6 +47,18 @@ func (h handlers) JWKSJSON(w http.ResponseWriter, r *http.Request) (int, string,
 	}
 }
 
+// ProcessForm expects the request to provide form data representing a patient
+// and his or her COVID-19 immunizations. This method extracts the form values
+// from the request, constructs an FHIR bundle from the form data, creates and
+// signs a JSON Web Signature encapsulating that data, and either writes a PNG
+// image of a single QR code representing a SMART Health Card with the
+// immunziation data, or a ZIP archive consisting of multiple PNGs of QR codes
+// which can be combined into a single SMART Health Card with the immunization
+// data.
+//
+// If there is an error, this methods returns the HTTP response code,
+// an additional error message if available, and false. If there is no
+// error, it returns 0, the empty string, and true.
 func (h handlers) ProcessForm(w http.ResponseWriter, r *http.Request) (int, string, bool) {
 	fhirBundle, err := parseInput(r)
 	if err != nil {

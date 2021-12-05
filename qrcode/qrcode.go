@@ -1,3 +1,10 @@
+// Package qrcode creates one or more QR codes in PNG format encoding the JWS
+// of a SMART Health Card such that smart devices such as iPhones can scan the
+// QR code(s) and load the SMART Health Card information in applications such
+// as the Wallet and Health apps for the iPhone. See
+// https://spec.smarthealth.cards/#every-health-card-can-be-embedded-in-a-qr-code
+// and
+// https://spec.smarthealth.cards/#encoding-chunks-as-qr-codes
 package qrcode
 
 import (
@@ -9,6 +16,12 @@ import (
 const maxSingleChunkSize = 1195 // https://spec.smarthealth.cards/#chunking
 const maxMultipleChunkSize = 1191
 
+// Encode takes the content to be encoded, breaks it into chunks if necessary,
+// and encodes each chunk as per the SMART Health Card spec, see:
+// https://spec.smarthealth.cards/#encoding-chunks-as-qr-codes
+//
+// Each encoded chunk is then encoded as a QR code in PNG format and
+// represented as a byte slice
 func Encode(content string) ([][]byte, error) {
 	numChunks := 1
 	if len(content) > maxSingleChunkSize {
