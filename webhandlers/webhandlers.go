@@ -17,7 +17,9 @@ import (
 	"github.com/amitkgupta/go-smarthealthcards/v2/qrcode"
 )
 
-type handlers struct {
+// Handlers should not be instantiated directly; use the New
+// function in this package instead.
+type Handlers struct {
 	key    *ecdsa.PrivateKey
 	issuer string
 }
@@ -25,8 +27,8 @@ type handlers struct {
 // New returns an object with methods that can be used in a web-based
 // application for issuing SMART Health Card QR codes for COVID-19
 // immunizations.
-func New(key *ecdsa.PrivateKey, issuer string) handlers {
-	return handlers{key: key, issuer: issuer}
+func New(key *ecdsa.PrivateKey, issuer string) Handlers {
+	return Handlers{key: key, issuer: issuer}
 }
 
 // JWKSJSON writes the JSON representation of the JSON Web Key Set
@@ -36,7 +38,7 @@ func New(key *ecdsa.PrivateKey, issuer string) handlers {
 // If there is an error, this methods returns the HTTP response code,
 // an additional error message if available, and false. If there is no
 // error, it returns 0, the empty string, and true.
-func (h handlers) JWKSJSON(w http.ResponseWriter) (int, string, bool) {
+func (h Handlers) JWKSJSON(w http.ResponseWriter) (int, string, bool) {
 	if jwksJSON, err := jws.JWKSJSON(h.key); err != nil {
 		return http.StatusInternalServerError, "", false
 	} else {
@@ -59,7 +61,7 @@ func (h handlers) JWKSJSON(w http.ResponseWriter) (int, string, bool) {
 // If there is an error, this methods returns the HTTP response code,
 // an additional error message if available, and false. If there is no
 // error, it returns 0, the empty string, and true.
-func (h handlers) ProcessForm(w http.ResponseWriter, r *http.Request) (int, string, bool) {
+func (h Handlers) ProcessForm(w http.ResponseWriter, r *http.Request) (int, string, bool) {
 	fhirBundle, err := parseInput(r)
 	if err != nil {
 		return http.StatusBadRequest, err.Error(), false
