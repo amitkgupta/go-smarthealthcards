@@ -5,7 +5,7 @@ representing COVID-19 Immunizations.
 
 ## Demo
 
-[![demo](https://img.youtube.com/vi/oSCz6mb54mk/0.jpg)](https://youtu.be/oSCz6mb54mk)
+![demo](https://user-images.githubusercontent.com/1580649/144734873-55bf1beb-22bc-4eb4-a3fa-82a634417945.gif)
 
 ## Documentation
 
