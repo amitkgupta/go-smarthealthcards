@@ -5,11 +5,11 @@ representing COVID-19 Immunizations.
 
 ## Demo
 
-![demo](https://user-images.githubusercontent.com/1580649/144734873-55bf1beb-22bc-4eb4-a3fa-82a634417945.gif)
+[![demo](https://user-images.githubusercontent.com/1580649/144734873-55bf1beb-22bc-4eb4-a3fa-82a634417945.gif)](https://akgupta.ca/smart-health-cards)
 
 ## Documentation
 
-[![godoc](https://godoc.org/github.com/amitkgupta/go-smarthealthcards?status.png)](https://godoc.org/github.com/amitkgupta/go-smarthealthcards)
+[![godoc](https://godoc.org/github.com/amitkgupta/go-smarthealthcards/v2?status.png)](https://godoc.org/github.com/amitkgupta/go-smarthealthcards/v2)
 
 ## Example
 
