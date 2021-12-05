@@ -12,9 +12,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/amitkgupta/go-smarthealthcards/fhirbundle"
-	"github.com/amitkgupta/go-smarthealthcards/jws"
-	"github.com/amitkgupta/go-smarthealthcards/qrcode"
+	"github.com/amitkgupta/go-smarthealthcards/v2/fhirbundle"
+	"github.com/amitkgupta/go-smarthealthcards/v2/jws"
+	"github.com/amitkgupta/go-smarthealthcards/v2/qrcode"
 )
 
 type handlers struct {

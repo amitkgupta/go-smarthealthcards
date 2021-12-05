@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/amitkgupta/go-smarthealthcards/ecdsa"
-	"github.com/amitkgupta/go-smarthealthcards/webhandlers"
+	"github.com/amitkgupta/go-smarthealthcards/v2/ecdsa"
+	"github.com/amitkgupta/go-smarthealthcards/v2/webhandlers"
 )
 
 // This example shows how to load an ECDSA private key from string

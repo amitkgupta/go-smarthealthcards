@@ -1,4 +1,4 @@
-module github.com/amitkgupta/go-smarthealthcards
+module github.com/amitkgupta/go-smarthealthcards/v2
 
 go 1.17
 
