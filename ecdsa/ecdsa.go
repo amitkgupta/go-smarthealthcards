@@ -1,6 +1,6 @@
 // Package ecdsa loads an ECDSA P-256 private key (*crypto/ecdsa.PrivateKey)
 // from string representations of its key parameters. See
-// https://spec.smarthealth.cards/#generating-and-resolving-cryptographic-keys
+// https://spec.smarthealth.cards/#generating-and-resolving-cryptographic-keys.
 package ecdsa
 
 import (

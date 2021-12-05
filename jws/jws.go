@@ -5,7 +5,7 @@
 // https://spec.smarthealth.cards/#health-cards-are-encoded-as-compact-serialization-json-web-signatures-jws,
 // https://spec.smarthealth.cards/#health-cards-are-small,
 // and
-// https://spec.smarthealth.cards/#determining-keys-associated-with-an-issuer
+// https://spec.smarthealth.cards/#determining-keys-associated-with-an-issuer.
 package jws
 
 import (
@@ -34,7 +34,7 @@ type header struct {
 
 // SignAndSerialize compresses the given payload, signs it with the given key,
 // and returns the resulting enoded JSON Web Signature (JWS). See:
-// https://datatracker.ietf.org/doc/html/rfc7515#appendix-A.3
+// https://datatracker.ietf.org/doc/html/rfc7515#appendix-A.3.
 func SignAndSerialize(payload []byte, key *ecdsa.PrivateKey) (string, error) {
 	h := header{
 		Algorithm: algorithm,
